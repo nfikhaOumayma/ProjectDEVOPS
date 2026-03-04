@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timesheet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timesheet
+  template:
+    metadata:
+      labels:
+        app: timesheet
+    spec:
+      containers:
+      - name: timesheet
+        image: oumaymanfikha/timesheet-devops:1.0
+        ports:
+        - containerPort: 8082
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_PASSWORD
